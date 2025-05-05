@@ -9,7 +9,9 @@ var photoSchema = new Schema({
 	 	ref: 'user'
 	},
 	'views' : Number,
-	'likes' : Number
+	'likes' : Number,
+	'description': String,	// Dodano polje za opis slike
+	'createdAt': { type: Date, default: Date.now } // Dodano polje za datum objave
 });
 
 module.exports = mongoose.model('photo', photoSchema);
