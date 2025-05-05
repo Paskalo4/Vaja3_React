@@ -52,22 +52,21 @@ function PhotoDetail() {
     if (!photo) {
         return <div>Nalaganje...</div>;
     }
-
     return (
-        <div>
+        <div className="photo-detail">
             <h2>{photo.name}</h2>
             <img 
                 src={"http://localhost:3001/" + photo.path} 
                 alt={photo.name} 
-                style={{ width: '300px', height: '300px', objectFit: 'cover' }} 
+                className="photo-detail-img"
             />
             <p>{photo.description}</p>
             <p className="text-muted">
                 Avtor: {photo.postedBy?.username || "Neznan"} | Objavljeno: {photo.createdAt ? new Date(photo.createdAt).toLocaleString() : "Ni podatka"}
             </p>
-            
+    
             {/* Oddelek za komentarje */}
-            <div>
+            <div className="comments-section">
                 <h3>Komentarji</h3>
                 {comments.length > 0 ? (
                     <ul>
@@ -86,8 +85,9 @@ function PhotoDetail() {
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Dodaj komentar..."
+                            className="comment-input"
                         />
-                        <button type="submit">Objavi komentar</button>
+                        <button type="submit" className="comment-button">Objavi komentar</button>
                     </form>
                 ) : (
                     <p>Prijavite se, da komentirate.</p>

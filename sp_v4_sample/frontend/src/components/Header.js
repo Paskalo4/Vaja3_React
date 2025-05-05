@@ -6,7 +6,7 @@ function Header(props) {
     return (
         <header>
             <h1>{props.title}</h1>
-            <nav>
+            <nav className="navbar">
                 <ul>
                     <li><Link to='/'>Home</Link></li>
                     <UserContext.Consumer>

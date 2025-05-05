@@ -30,14 +30,29 @@ function Login(){
     }
 
     return (
-        <form onSubmit={Login}>
+        <form className="login-form" onSubmit={Login}>
             {userContext.user ? <Navigate replace to="/" /> : ""}
-            <input type="text" name="username" placeholder="Username"
-             value={username} onChange={(e)=>(setUsername(e.target.value))}/>
-             <input type="password" name="password" placeholder="Password"
-             value={password} onChange={(e)=>(setPassword(e.target.value))}/>
-             <input type="submit" name="submit" value="Log in"/>
-             <label>{error}</label>
+            <h2>Prijava</h2>
+            <input 
+                type="text" 
+                name="username" 
+                placeholder="Uporabniško ime"
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input 
+                type="password" 
+                name="password" 
+                placeholder="Geslo"
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <input 
+                type="submit" 
+                name="submit" 
+                value="Prijava"
+            />
+            {error && <label className="error-label">{error}</label>}
         </form>
     );
 }
