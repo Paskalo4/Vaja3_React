@@ -12,7 +12,7 @@ module.exports = {
      */
     list: function (req, res) {
         PhotoModel.find()
-        .populate('postedBy')
+        .populate('postedBy', 'username')
         .exec(function (err, photos) {
             if (err) {
                 return res.status(500).json({
@@ -33,7 +33,9 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        PhotoModel.findOne({_id: id}, function (err, photo) {
+        PhotoModel.findOne({_id: id})
+            .populate('postedBy', 'username')
+            .exec(function(err, photo){
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting photo.',

@@ -5,6 +5,7 @@ var upload = multer({dest: 'public/images/'});
 
 var router = express.Router();
 var photoController = require('../controllers/photoController.js');
+var commentController = require('../controllers/commentController.js');
 
 function requiresLogin(req, res, next){
     if(req.session && req.session.userId){
@@ -33,5 +34,9 @@ router.post(
 router.put('/:id', photoController.update);
 
 router.delete('/:id', photoController.remove);
+
+// Dodaj endpoint za komentiranje
+router.post('/:id/comments', requiresLogin, commentController.create);
+router.get('/:id/comments', commentController.list);
 
 module.exports = router;
