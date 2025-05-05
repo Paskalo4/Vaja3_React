@@ -39,4 +39,5 @@ router.delete('/:id', photoController.remove);
 router.post('/:id/comments', requiresLogin, commentController.create);
 router.get('/:id/comments', commentController.list);
 
+router.post('/:id/vote', requiresLogin, photoController.vote);
 module.exports = router;

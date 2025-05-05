@@ -27,7 +27,7 @@ function Photos(){
                             <p>{photo.description}</p>
                             <p className="text-muted">Avtor: {photo.postedBy?.username || "Neznan"}</p>
                             <p className="text-muted">Objavljeno: {new Date(photo.createdAt).toLocaleString()}</p>
-                        </Link>
+                            <p>👍 {photo.likes ? photo.likes.length : 0} | 👎 {photo.dislikes ? photo.dislikes.length : 0}</p>                        </Link>
                     </div>
                 ))}
             </div>
