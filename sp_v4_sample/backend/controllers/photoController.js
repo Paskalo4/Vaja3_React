@@ -55,12 +55,15 @@ module.exports = {
      * photoController.create()
      */
     create: function (req, res) {
+        console.log("Request body:", req.body);
         var photo = new PhotoModel({
 			name : req.body.name,
 			path : "/images/"+req.file.filename,
 			postedBy : req.session.userId,
 			views : 0,
-			likes : 0
+			likes : 0,
+            createdAt: new Date(),
+            description: req.body.description // Dodano polje za opis slike
         });
 
         photo.save(function (err, photo) {
@@ -101,7 +104,6 @@ module.exports = {
 			photo.postedBy = req.body.postedBy ? req.body.postedBy : photo.postedBy;
 			photo.views = req.body.views ? req.body.views : photo.views;
 			photo.likes = req.body.likes ? req.body.likes : photo.likes;
-			
             photo.save(function (err, photo) {
                 if (err) {
                     return res.status(500).json({

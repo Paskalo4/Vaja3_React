@@ -7,6 +7,8 @@ function Photos(){
         const getPhotos = async function(){
             const res = await fetch("http://localhost:3001/photos");
             const data = await res.json();
+            // Razvrsti slike po datumu objave (najnovejše najprej)
+            const sortedPhotos = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPhotos(data);
         }
         getPhotos();
