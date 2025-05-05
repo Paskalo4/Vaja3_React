@@ -32,7 +32,7 @@ function AddPhoto(props) {
     }
 
     return (
-        <form className="form-group" onSubmit={onSubmit}>
+        <form className="publish-form" onSubmit={onSubmit}>
             {!userContext.user ? <Navigate replace to="/login" /> : ""}
             {uploaded ? <Navigate replace to="/" /> : ""}
             <input type="text" className="form-control" name="ime" placeholder="Ime slike" value={name} onChange={(e)=>{setName(e.target.value)}}/>

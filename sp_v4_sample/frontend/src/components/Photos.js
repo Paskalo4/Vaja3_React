@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Dodaj uvoz za Link
 import Photo from './Photo';
 
 function Photos(){
@@ -14,12 +15,22 @@ function Photos(){
         getPhotos();
     }, []);
 
-    return(
+    return (
         <div>
-            <h3>Photos:</h3>
-            <ul>
-                {photos.map(photo=>(<Photo photo={photo} key={photo._id}></Photo>))}
-            </ul>
+            <h3 style={{ textAlign: 'center' }}>Photos:</h3>
+            <div className="photos-container">
+                {photos.map(photo => (
+                    <div className="photo-card" key={photo._id}>
+                        <Link to={`/photo/${photo._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <h5>{photo.name}</h5>
+                            <img src={"http://localhost:3001/" + photo.path} alt={photo.name} />
+                            <p>{photo.description}</p>
+                            <p className="text-muted">Avtor: {photo.postedBy?.username || "Neznan"}</p>
+                            <p className="text-muted">Objavljeno: {new Date(photo.createdAt).toLocaleString()}</p>
+                        </Link>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
