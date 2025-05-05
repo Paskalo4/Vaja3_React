@@ -9,7 +9,8 @@ var photoSchema = new Schema({
 	 	ref: 'user'
 	},
 	'views' : Number,
-	'likes' : Number,
+	likes: [{ type: Schema.Types.ObjectId, ref: 'user' }], // Seznam uporabnikov, ki so glasovali za like
+    dislikes: [{ type: Schema.Types.ObjectId, ref: 'user' }], // Seznam uporabnikov, ki so glasovali za dislike
 	'description': String,	// Dodano polje za opis slike
 	'createdAt': { type: Date, default: Date.now } // Dodano polje za datum objave
 });

@@ -22,6 +22,7 @@ module.exports = {
             }
             var data = [];
             data.photos = photos;
+            console.log(photos);
             //return res.render('photo/list', data);
             return res.json(photos);
         });
@@ -63,7 +64,8 @@ module.exports = {
 			path : "/images/"+req.file.filename,
 			postedBy : req.session.userId,
 			views : 0,
-			likes : 0,
+            likes: [], // Inicializiraj kot prazen seznam
+            dislikes: [], // Inicializiraj kot prazen seznam
             createdAt: new Date(),
             description: req.body.description // Dodano polje za opis slike
         });
@@ -139,5 +141,39 @@ module.exports = {
 
     publish: function(req, res){
         return res.render('photo/publish');
+    },
+
+    /**
+     * photoController.vote()
+     */
+
+    vote: async function (req, res) {
+        const { id } = req.params;
+        const { voteType } = req.body;
+        const userId = req.session.userId;
+
+        try {
+            const photo = await PhotoModel.findById(id);
+
+            if (!photo) {
+                return res.status(404).json({ message: "Photo not found" });
+            }
+
+            // Odstrani uporabnika iz obeh seznamov
+            photo.likes = photo.likes.filter(user => user.toString() !== userId);
+            photo.dislikes = photo.dislikes.filter(user => user.toString() !== userId);
+
+            // Dodaj uporabnika v ustrezen seznam
+            if (voteType === "like") {
+                photo.likes.push(userId);
+            } else if (voteType === "dislike") {
+                photo.dislikes.push(userId);
+            }
+
+            await photo.save();
+            return res.status(200).json(photo);
+        } catch (err) {
+            return res.status(500).json({ message: "Error voting on photo", error: err });
+        }
     }
 };

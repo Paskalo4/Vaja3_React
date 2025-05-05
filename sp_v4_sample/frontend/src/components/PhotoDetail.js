@@ -20,7 +20,6 @@ function PhotoDetail() {
     }, [id]);
 
     useEffect(() => {
-        // Pridobi komentarje za dano sliko
         const fetchComments = async () => {
             const res = await fetch(`http://localhost:3001/photos/${id}/comments`);
             const data = await res.json();
@@ -35,7 +34,7 @@ function PhotoDetail() {
         if (!comment) return;
         const res = await fetch(`http://localhost:3001/photos/${id}/comments`, {
             method: 'POST',
-            credentials: 'include', // če uporabljate seje/cookie
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -43,15 +42,34 @@ function PhotoDetail() {
         });
         if (res.ok) {
             const data = await res.json();
-            // Posodobi lokalni seznam komentarjev, če endpoint vrne nov komentar
             setComments(prev => [...prev, data]);
             setComment('');
+        }
+    };
+
+    const handleVote = async (voteType) => {
+        try {
+            const res = await fetch(`http://localhost:3001/photos/${id}/vote`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ voteType }) // Pošlje "like" ali "dislike"
+            });
+            if (res.ok) {
+                const updatedPhoto = await res.json();
+                setPhoto(updatedPhoto); // Posodobi podatke o sliki
+            } else {
+                console.error("Napaka pri glasovanju:", res.statusText);
+            }
+        } catch (error) {
+            console.error("Napaka pri povezavi z backendom:", error);
         }
     };
 
     if (!photo) {
         return <div>Nalaganje...</div>;
     }
+
     return (
         <div className="photo-detail">
             <h2>{photo.name}</h2>
@@ -64,8 +82,16 @@ function PhotoDetail() {
             <p className="text-muted">
                 Avtor: {photo.postedBy?.username || "Neznan"} | Objavljeno: {photo.createdAt ? new Date(photo.createdAt).toLocaleString() : "Ni podatka"}
             </p>
-    
-            {/* Oddelek za komentarje */}
+
+            <div className="vote-section">
+                <button onClick={() => handleVote("like")} className="like-button">
+                    👍 {photo.likes ? photo.likes.length : 0}
+                </button>
+                <button onClick={() => handleVote("dislike")} className="dislike-button">
+                    👎 {photo.dislikes ? photo.dislikes.length : 0}
+                </button>
+            </div>
+
             <div className="comments-section">
                 <h3>Komentarji</h3>
                 {comments.length > 0 ? (
